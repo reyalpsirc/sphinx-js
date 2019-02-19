@@ -36,6 +36,7 @@ def setup(app):
     # js_source_path to a list and calls abspath() on it. It's simpler this way
     # until we need to access js_source_path from more than one place.
     app.add_config_value('root_for_relative_js_paths', None, 'env')
+    app.add_config_value('debug_longnames', False, 'env')
 
 
 def read_all_docs(app, env, doc_names):

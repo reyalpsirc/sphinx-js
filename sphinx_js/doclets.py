@@ -124,7 +124,7 @@ def analyze_typescript(abs_source_paths, app):
             else:
                 raise
         # typedoc emits a valid JSON file even if it finds no TS files in the dir:
-        return parse_typedoc(temp)
+        return parse_typedoc(temp, app.config.debug_longnames)
 
 
 ANALYZERS = {'javascript': analyze_jsdoc,

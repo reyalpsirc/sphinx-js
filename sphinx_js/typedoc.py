@@ -43,12 +43,13 @@ class TypeDoc(object):
     JSDoc JSON schema: https://github.com/jsdoc3/jsdoc/blob/master/lib/jsdoc/schema.js
     """
 
-    def __init__(self, root):
+    def __init__(self, root, debug_longnames):
         """
         Construct a list of jsdoc entries from the typedoc JSON object.
 
         :param root: a JSON object from a typedoc JSON file
         """
+        self.debug_longnames = debug_longnames
         self.jsdoc = []
         self.nodelist = {}
         self.make_node_list(root)
@@ -374,6 +375,8 @@ class TypeDoc(object):
             doclet = None
         if doclet:
             self.jsdoc.append(doclet)
+            if (self.debug_longnames):
+                print(doclet['longname'])
         for child in node.get('children', []):
             self.convert_node(child)
 
@@ -393,9 +396,9 @@ class TypeDoc(object):
         self.make_node_list(node.get('declaration'), None)
 
 
-def parse_typedoc(inputfile):
+def parse_typedoc(inputfile, debug_longnames):
     """Parse and convert the typedoc JSON file to a list jsdoc entries"""
-    typedoc = TypeDoc(json.load(inputfile))
+    typedoc = TypeDoc(json.load(inputfile), debug_longnames)
     return typedoc.jsdoc
 
 
