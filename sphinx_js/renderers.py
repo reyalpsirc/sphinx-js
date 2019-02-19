@@ -227,6 +227,20 @@ class AutoFunctionRenderer(JsRenderer):
             see_also=doclet.get('see', []),
             content='\n'.join(self._content))
 
+class AutoDataRenderer(JsRenderer):
+    _template = 'data.rst'
+
+    def _template_vars(self, name, full_path, doclet):
+        return dict(
+            name=name,
+            params=self._formal_params(doclet),
+            fields=self._fields(doclet),
+            description=doclet.get('description', ''),
+            examples=doclet.get('examples', ''),
+            deprecated=doclet.get('deprecated', False),
+            see_also=doclet.get('see', []),
+            content='\n'.join(self._content))
+
 
 class AutoClassRenderer(JsRenderer):
     _template = 'class.rst'

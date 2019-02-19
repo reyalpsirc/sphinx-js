@@ -354,6 +354,22 @@ class TypeDoc(object):
             for param in node.get('parameters', []):
                 doclet['params'].append(self.make_param(param))
                 doclet['meta']['code']['paramnames'].append(param.get('name'))
+        elif kindString in ['Object literal']:
+            specifiers = []
+            doclet = self.simple_doclet('function', node)
+            doclet['description'] = '*Data object*\n' + doclet['description']
+            self.extend_doclet(
+                doclet,
+                params=[]
+            )
+            doclet['meta']['code']['paramnames'] = []
+            for child in node.get('children'):
+                child_comment = child.get('comment', {})
+                child_description = self.make_description(child_comment)
+                if child.get('flags', {}).get('isOptional'):
+                    child_description = '*optional* ' + child_description
+                doclet['params'].append(self.make_param(child, child_comment))
+                doclet['meta']['code']['paramnames'].append(child.get('name'))
         else:
             doclet = None
         if doclet:

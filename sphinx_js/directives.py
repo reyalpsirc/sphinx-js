@@ -10,7 +10,7 @@ can access each other and collaborate.
 from docutils.parsers.rst import Directive
 from docutils.parsers.rst.directives import flag
 
-from .renderers import AutoFunctionRenderer, AutoClassRenderer, AutoAttributeRenderer
+from .renderers import AutoFunctionRenderer, AutoDataRenderer, AutoClassRenderer, AutoAttributeRenderer
 
 
 class JsDirective(Directive):
@@ -38,6 +38,19 @@ def auto_function_directive_bound_to_app(app):
             return AutoFunctionRenderer.from_directive(self, app).rst_nodes()
 
     return AutoFunctionDirective
+
+def auto_data_directive_bound_to_app(app):
+    class AutoDataDirective(JsDirective):
+        """js:autodata directive, which spits out a js:data directive
+
+        Takes a single argument which is a JS data name combined with an
+        optional formal properties list, all mashed together in a single string.
+
+        """
+        def run(self):
+            return AutoDataRenderer.from_directive(self, app).rst_nodes()
+
+    return AutoDataDirective
 
 
 def auto_class_directive_bound_to_app(app):
